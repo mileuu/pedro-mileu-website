@@ -9,8 +9,10 @@
   --muted: #777;
   --rule: #111;
   --faint: #d6d6d2;
-  --mark: #fff35c;          /* yellow highlight (active nav, hover) */
-  --link: #1a1aff;          /* blue links in small text */
+  --blue: #0100ca;          /* brand blue */
+  --mark: var(--blue);      /* highlight (active nav, hover, selection) */
+  --on-mark: #fff;          /* text on the highlight */
+  --link: var(--blue);      /* links in small text */
   --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
   --sans: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --gutter: clamp(16px, 3vw, 40px);
@@ -33,9 +35,9 @@ body {
 img { display: block; max-width: 100%; height: auto; }
 
 a { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
-a:hover { background: var(--mark); }
+a:hover { background: var(--mark); color: var(--on-mark); }
 
-::selection { background: var(--mark); }
+::selection { background: var(--mark); color: var(--on-mark); }
 
 /* ---------- header / nav ---------- */
 
@@ -63,7 +65,7 @@ a:hover { background: var(--mark); }
 
 .site-header nav { display: flex; gap: 20px; flex-wrap: wrap; justify-content: flex-end; }
 
-.site-header a[aria-current="page"] { background: var(--mark); }
+.site-header a[aria-current="page"] { background: var(--mark); color: var(--on-mark); }
 
 /* ---------- labelled sections (the "_bio" pattern) ---------- */
 
@@ -77,7 +79,7 @@ a:hover { background: var(--mark); }
 .label {
   font-family: var(--mono);
   font-size: 12px;
-  color: var(--muted);
+  color: var(--blue);
   padding-top: 8px;
 }
 
@@ -161,7 +163,7 @@ a:hover { background: var(--mark); }
 .index-side ul { list-style: none; }
 .index-side li { padding: 2px 0; }
 .index-side a { color: var(--link); text-decoration: none; }
-.index-side a:hover { color: var(--ink); }
+.index-side a:hover { color: var(--on-mark); }
 
 .intro { font-size: 15px; margin-bottom: 40px; max-width: 36em; }
 
@@ -169,7 +171,7 @@ a:hover { background: var(--mark); }
   font-family: var(--mono);
   font-size: 12px;
   font-weight: 400;
-  color: var(--muted);
+  color: var(--blue);
   border-top: 1px solid var(--rule);
   padding-top: 8px;
   margin: 56px 0 20px;
@@ -188,7 +190,7 @@ a:hover { background: var(--mark); }
 .card .thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
 .card:hover .thumb img { transform: scale(1.03); }
 .card h4 { font-size: 16px; font-weight: 500; margin-top: 10px; }
-.card:hover h4 { background: var(--mark); display: inline; }
+.card:hover h4 { background: var(--mark); color: var(--on-mark); display: inline; }
 .card p { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 4px; }
 
 /* ---------- single work page ---------- */
