@@ -92,6 +92,18 @@ a:hover { background: var(--mark); color: var(--on-mark); }
 
 .lead p + p { margin-top: 0.8em; }
 
+/* home bio: smaller, justified block */
+.bio {
+  font-size: clamp(17px, 1.45vw, 20px);
+  line-height: 1.5;
+  letter-spacing: 0;
+  max-width: 34em;
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+.bio p + p { margin-top: 1em; }
+
 /* ---------- home hero ---------- */
 
 .hero { margin-top: 56px; }
@@ -284,6 +296,8 @@ a:hover { background: var(--mark); color: var(--on-mark); }
   .events .date { grid-column: 1 / -1; }
   .events .where { grid-column: 1; }
   .events .more { grid-row: 2; grid-column: 2; }
+
+  .bio { font-size: 16px; }
 
   .media.two { grid-template-columns: 1fr; }
   .release { grid-template-columns: 1fr; gap: 16px; }
