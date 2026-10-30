@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Your Name</title>
-  <meta name="description" content="Your Name — artist working with sound, performance and installation.">
+  <title>Pedro Mileu</title>
+  <meta name="description" content="Pedro Mileu — Portuguese sound artist based in Berlin. Sound installation, electroacoustic composition and performance.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
 <body>
 
   <header class="site-header">
-    <a class="name" href="index.html" aria-current="page">_your name</a>
+    <a class="name" href="index.html" aria-current="page">_pedro mileu</a>
     <nav>
       <a href="portfolio.html">_portfolio</a>
       <a href="music.html">_music</a>
@@ -21,17 +21,21 @@
     </nav>
   </header>
 
-  <!-- HERO IMAGE: replace images/hero.svg with your own photo (e.g. images/hero.jpg) -->
+  <!-- HERO IMAGE: swap images/hero.jpg for another photo to change it.
+       The feedback effect on hover comes from hero-feedback.js. -->
   <figure class="hero">
-    <img src="images/hero.svg" alt="Describe the image here">
-    <figcaption class="caption">Photo: Performance title, Venue, 2026. © Photographer</figcaption>
+    <div class="hero-frame">
+      <img src="images/hero.jpg" alt="Pedro Mileu performing seated on the floor in front of a large projection of streaking blue, red and yellow lines">
+      <canvas class="hero-fx" aria-hidden="true"></canvas>
+    </div>
+    <figcaption class="caption">Live audio-visual performance</figcaption>
   </figure>
 
   <section class="section">
     <div class="label">_bio</div>
     <div class="lead">
-      <p>Artist working with sound, performance and installation. Write two or three sentences here about what you make, the materials and ideas you return to, and what you want people to feel.</p>
-      <p>Based in City. Currently studying / teaching / resident at <a href="#">Institution</a>. Member of <a href="#">Collective</a>.</p>
+      <p>pedro mileu is a Portuguese sound artist based in Berlin. His practice spans sound installation, electroacoustic composition and performance, and has more recently extended into multimedia contexts.</p>
+      <p>Working with sound as physical matter and as a relational medium, MILEU develops works that explore materiality, feedback systems, psychoacoustic phenomena, and the interplay between sound, space and objects.</p>
     </div>
   </section>
 
@@ -97,7 +101,7 @@
   </section>
 
   <footer class="site-footer">
-    <span>© 2026 Your Name</span>
+    <span>© 2026 Pedro Mileu</span>
     <nav>
       <a href="mailto:you@example.com">email</a>
       <a href="#">instagram ↗</a>
@@ -106,5 +110,6 @@
     </nav>
   </footer>
 
+  <script src="hero-feedback.js"></script>
 </body>
 </html>
