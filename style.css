@@ -302,3 +302,24 @@ a:hover { background: var(--mark); color: var(--on-mark); }
   .media.two { grid-template-columns: 1fr; }
   .release { grid-template-columns: 1fr; gap: 16px; }
 }
+
+/* ---------- glitchy hover: red/cyan split + jitter ---------- */
+
+@keyframes jitter {
+  0%   { transform: translate(0, 0); }
+  20%  { transform: translate(-2px, 1px); }
+  40%  { transform: translate(2px, -1px); }
+  60%  { transform: translate(-1px, 0); }
+  80%  { transform: translate(1px, 1px); }
+  100% { transform: translate(0, 0); }
+}
+a:hover,
+.card:hover h4 {
+  text-shadow: -2px 0 #ff1a00, 2px 0 #00e5ff;
+  animation: jitter 0.18s steps(2) infinite;
+}
+.card:hover h4 { display: inline-block; }
+
+@media (prefers-reduced-motion: reduce) {
+  a:hover, .card:hover h4 { animation: none; }
+}
