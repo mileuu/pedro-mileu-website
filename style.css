@@ -10,9 +10,9 @@
   --rule: #111;
   --faint: #d6d6d2;
   --blue: #0100ca;          /* brand blue */
-  --mark: var(--blue);      /* highlight (active nav, hover, selection) */
-  --on-mark: #fff;          /* text on the highlight */
-  --link: var(--blue);      /* links in small text */
+  --mark: #fff35c;          /* yellow highlight (active nav, hover, selection) */
+  --on-mark: var(--ink);    /* text on the highlight */
+  --link: #1a1aff;          /* blue links in small text */
   --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
   --sans: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --gutter: clamp(16px, 3vw, 40px);
@@ -79,7 +79,7 @@ a:hover { background: var(--mark); color: var(--on-mark); }
 .label {
   font-family: var(--mono);
   font-size: 12px;
-  color: var(--blue);
+  color: var(--muted);
   padding-top: 8px;
 }
 
@@ -163,7 +163,7 @@ a:hover { background: var(--mark); color: var(--on-mark); }
 .index-side ul { list-style: none; }
 .index-side li { padding: 2px 0; }
 .index-side a { color: var(--link); text-decoration: none; }
-.index-side a:hover { color: var(--on-mark); }
+.index-side a:hover { color: var(--ink); }
 
 .intro { font-size: 15px; margin-bottom: 40px; max-width: 36em; }
 
@@ -171,7 +171,7 @@ a:hover { background: var(--mark); color: var(--on-mark); }
   font-family: var(--mono);
   font-size: 12px;
   font-weight: 400;
-  color: var(--blue);
+  color: var(--muted);
   border-top: 1px solid var(--rule);
   padding-top: 8px;
   margin: 56px 0 20px;

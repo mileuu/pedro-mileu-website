@@ -11,14 +11,17 @@
 
 (function () {
   var SETTINGS = {
-    zoom: 1.012,          // feedback zoom per frame (bigger = faster tunnel)
-    drift: 1.2,           // feedback downward drift in px per frame
-    persistence: 0.9,     // how much of the last frame survives (0–1)
-    streaks: 22,          // vertical streaks per frame at full intensity
+    zoom: 1.022,          // feedback zoom per frame (bigger = faster tunnel)
+    drift: 2.5,           // feedback downward drift in px per frame
+    persistence: 0.95,    // how much of the last frame survives (0–1)
+    saturate: 1.05,       // colour boost applied on every feedback pass (compounds, 1 = off)
+    chroma: 4,            // sideways ghost doubling in px on the feedback (0 = off)
+    decay: 0.12,          // how fast added light fades each frame (higher = darker, less build-up)
+    streaks: 36,          // vertical streaks per frame at full intensity
     screen: [0.2, 0.12, 0.68, 0.65], // bright area of the photo streaks take colour from (left, top, right, bottom as 0–1)
-    tears: 2,             // horizontal tears per frame at full intensity
-    spread: 0.18,         // how far around the pointer streaks spawn (share of width)
-    colors: ["#38d4ff", "#ff3b24", "#d8ff2e", "#2f5bff", "#ff4fd2", "#3affc4"]
+    tears: 5,             // horizontal tears per frame at full intensity
+    spread: 0.28,         // how far around the pointer streaks spawn (share of width)
+    colors: ["#00e5ff", "#ff1a00", "#e8ff00", "#0047ff", "#ff00b8", "#00ff8c", "#7a00ff"]
   };
 
   var frame = document.querySelector(".hero-frame");
@@ -71,7 +74,7 @@
     mouse.px = mouse.x;
     mouse.py = mouse.y;
 
-    var target = mouse.inside ? Math.min(1, 0.45 + speed / 30) : 0;
+    var target = mouse.inside ? Math.min(1, 0.7 + speed / 25) : 0;
     intensity += (target - intensity) * (target > intensity ? 0.15 : 0.05);
 
     if (!mouse.inside && intensity < 0.01) {
@@ -89,7 +92,22 @@
     var oy = mouse.y - mouse.y * z + SETTINGS.drift * dpr * k;
     ctx.globalCompositeOperation = "source-over";
     ctx.globalAlpha = SETTINGS.persistence;
+    ctx.filter = "saturate(" + (1 + (SETTINGS.saturate - 1) * k) + ")";
     ctx.drawImage(canvas, 0, 0, W, H, ox, oy, W * z, H * z);
+    ctx.filter = "none";
+
+    // ghost doubling: a sideways offset copy laid over, like a smeared signal
+    if (SETTINGS.chroma) {
+      ctx.globalAlpha = 0.3 * k;
+      ctx.drawImage(canvas, SETTINGS.chroma * dpr * k * (Math.random() < 0.5 ? -1 : 1), 0);
+    }
+
+    // decay: darken a little every frame so added light fades instead of piling up to white
+    ctx.globalCompositeOperation = "multiply";
+    ctx.globalAlpha = SETTINGS.decay * k;
+    ctx.fillStyle = "#000";
+    ctx.fillRect(0, 0, W, H);
+    ctx.globalCompositeOperation = "source-over";
 
     // 2. pull back toward the clean photo so it never fully dissolves
     drawBase(0.05 + (1 - k) * 0.25);
@@ -100,21 +118,21 @@
     for (var i = 0; i < n; i++) {
       var x = mouse.x + gauss() * W * SETTINGS.spread;
       if (x < 0 || x > W) continue;
-      var w = rand(1, 4) * dpr;
+      var w = rand(1, 6) * dpr;
       // sample colour from the projection screen in the photo
       var sx = img.naturalWidth * rand(SETTINGS.screen[0], SETTINGS.screen[2]);
       var sy = img.naturalHeight * rand(SETTINGS.screen[1], SETTINGS.screen[3]);
       var top = rand(-0.2, 0.5) * H;
-      ctx.globalAlpha = rand(0.25, 0.8) * k;
+      ctx.globalAlpha = rand(0.3, 0.85) * k;
       ctx.drawImage(img, sx, sy, Math.max(1, w / src.s), rand(4, 30), x, top, w, rand(0.3, 1.2) * H);
     }
 
     // coloured scan lines, like the projector's phosphor trails
     for (var j = 0; j < n / 2; j++) {
       var lx = mouse.x + gauss() * W * SETTINGS.spread * 1.4;
-      ctx.globalAlpha = rand(0.1, 0.45) * k;
+      ctx.globalAlpha = rand(0.25, 0.8) * k;
       ctx.fillStyle = SETTINGS.colors[(Math.random() * SETTINGS.colors.length) | 0];
-      ctx.fillRect(lx, rand(-0.1, 0.8) * H, rand(1, 2.5) * dpr, rand(0.1, 0.7) * H);
+      ctx.fillRect(lx, rand(-0.1, 0.8) * H, rand(1, 4) * dpr, rand(0.1, 0.9) * H);
     }
 
     // 4. horizontal tears: shift a band of the image sideways
@@ -124,7 +142,7 @@
     for (var m = 0; m < t; m++) {
       var by = mouse.y + gauss() * H * 0.25;
       var bh = rand(2, 18) * dpr;
-      var shift = gauss() * 50 * dpr * k;
+      var shift = gauss() * 90 * dpr * k;
       ctx.drawImage(canvas, 0, by, W, bh, shift, by, W, bh);
     }
 
