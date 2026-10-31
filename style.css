@@ -1,25 +1,26 @@
 /* ==========================================================
    Portfolio — shared stylesheet
-   A cool grey "patching canvas": a faint grid behind everything,
-   content sits in small window panels with title bars, and the
-   header/footer are thin menu bars. Edit the variables below to
+   A cool grey canvas with a faint dot grid behind everything;
+   content sits in soft-edged panels with title bars, and the
+   header/footer are thin bars. Edit the variables below to
    change colours and fonts site-wide.
    ========================================================== */
 
 :root {
   --bg: #e8eaea;            /* page canvas */
-  --grid: rgba(0, 0, 0, 0.045); /* faint grid lines on the canvas (transparent = off) */
+  --grid: rgba(0, 0, 0, 0.11);  /* faint dot grid on the canvas (transparent = off) */
   --panel: #f8f9f9;         /* window panels */
   --head: #eef0f0;          /* panel title bars */
   --ink: #0e0e0e;
   --muted: #6d7172;
-  --rule: #0e0e0e;          /* panel borders */
-  --hair: #d3d6d6;          /* thin lines inside panels */
+  --rule: #a8adae;          /* panel borders */
+  --hair: #dcdfdf;          /* thin lines inside panels */
   --mark: #fff35c;          /* yellow highlight (active nav, hover, selection) */
   --on-mark: var(--ink);
   --link: #1a1aff;          /* blue links in small text */
-  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
-  --sans: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: "DM Mono", ui-monospace, Menlo, monospace;
+  --sans: "Instrument Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --radius: 4px;
   --gutter: clamp(12px, 2.4vw, 32px);
   --gap: 16px;              /* space between panels */
 }
@@ -30,9 +31,7 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   background-color: var(--bg);
-  background-image:
-    linear-gradient(to right, var(--grid) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-image: radial-gradient(var(--grid) 1px, transparent 1.4px);
   background-size: 24px 24px;
   color: var(--ink);
   font-family: var(--sans);
@@ -48,9 +47,7 @@ a:hover { background: var(--mark); color: var(--on-mark); }
 
 ::selection { background: var(--mark); color: var(--on-mark); }
 
-/* ---------- panels: a bordered box with a title bar ----------
-   Small dark tabs on the top and bottom edges nod to the inlets and
-   outlets of a patching environment. */
+/* ---------- panels: a soft-edged box with a title bar ---------- */
 
 .panel,
 .section,
@@ -59,30 +56,8 @@ a:hover { background: var(--mark); color: var(--on-mark); }
   position: relative;
   background: var(--panel);
   border: 1px solid var(--rule);
-}
-
-.panel::before,
-.section::before,
-.index-side::before {
-  content: "";
-  position: absolute;
-  top: -1px;
-  left: 10px;
-  width: 12px;
-  height: 3px;
-  background: var(--ink);
-}
-
-.panel::after,
-.section::after,
-.index-side::after {
-  content: "";
-  position: absolute;
-  bottom: -1px;
-  left: 10px;
-  width: 12px;
-  height: 3px;
-  background: var(--ink);
+  border-radius: var(--radius);
+  overflow: hidden;
 }
 
 .panel-head,
@@ -91,17 +66,17 @@ a:hover { background: var(--mark); color: var(--on-mark); }
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 400;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
   line-height: 1.3;
   color: var(--ink);
   background: var(--head);
-  border-bottom: 1px solid var(--rule);
-  padding: 6px 12px 6px 30px;
+  border-bottom: 1px solid var(--hair);
+  padding: 7px 14px;
 }
 
-.panel-head span + span { color: var(--muted); }
+.panel-head span + span { color: var(--muted); font-weight: 400; }
 
 .panel-body { padding: 14px 16px 16px; }
 
@@ -115,8 +90,10 @@ a:hover { background: var(--mark); color: var(--on-mark); }
   align-items: stretch;
   background: var(--panel);
   border: 1px solid var(--rule);
-  font-family: var(--mono);
-  font-size: 12px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  font-family: var(--sans);
+  font-size: 13px;
   line-height: 1.3;
 }
 
@@ -140,13 +117,14 @@ a:hover { background: var(--mark); color: var(--on-mark); }
   text-decoration: none;
 }
 
-.site-header a { border-right: 1px solid var(--rule); }
+.site-header a { border-right: 1px solid var(--hair); }
 
 .site-header .name { gap: 8px; }
 .site-header .name::before {
   content: "";
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
   background: var(--ink);
 }
 
@@ -156,8 +134,10 @@ a:hover { background: var(--mark); color: var(--on-mark); }
 
 .site-header .clock {
   margin-left: auto;
-  border-left: 1px solid var(--rule);
+  border-left: 1px solid var(--hair);
   color: var(--muted);
+  font-family: var(--mono);
+  font-size: 12px;
   font-variant-numeric: tabular-nums;
 }
 
@@ -213,11 +193,10 @@ a:hover { background: var(--mark); color: var(--on-mark); }
 }
 
 .caption {
-  font-family: var(--mono);
-  font-size: 11px;
+  font-size: 12px;
   color: var(--muted);
   padding: 7px 12px 8px;
-  border-top: 1px solid var(--rule);
+  border-top: 1px solid var(--hair);
   background: var(--head);
 }
 
@@ -262,28 +241,25 @@ a:hover { background: var(--mark); color: var(--on-mark); }
   position: sticky;
   top: 64px;
   align-self: start;
-  font-family: var(--mono);
-  font-size: 12px;
+  font-size: 13px;
 }
 
-.index-side h3 + ul { padding: 8px 12px 12px; }
+.index-side h3 + ul { padding: 8px 14px 12px; }
 .index-side ul { list-style: none; }
-.index-side ul + h3 { border-top: 1px solid var(--rule); }
+.index-side ul + h3 { border-top: 1px solid var(--hair); }
 .index-side li { padding: 2px 0; }
 .index-side a { color: var(--link); text-decoration: none; }
 .index-side a:hover { color: var(--ink); }
 
 .intro {
-  font-family: var(--mono);
-  font-size: 12px;
+  font-size: 14px;
   color: var(--muted);
   margin-bottom: var(--gap);
 }
 
 .group-title {
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 400;
+  font-size: 12px;
+  font-weight: 500;
   color: var(--ink);
   margin: 40px 0 10px;
 }
@@ -297,7 +273,7 @@ a:hover { background: var(--mark); color: var(--on-mark); }
 
 .card { text-decoration: none; display: block; }
 .card:hover { background: var(--panel); }
-.card .thumb { aspect-ratio: 4 / 3; overflow: hidden; background: var(--hair); border-bottom: 1px solid var(--rule); }
+.card .thumb { aspect-ratio: 4 / 3; overflow: hidden; background: var(--hair); }
 .card .thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
 .card:hover .thumb img { transform: scale(1.03); }
 .card h4 { font-size: 15px; font-weight: 500; padding: 10px 12px 0; }
@@ -307,7 +283,7 @@ a:hover { background: var(--mark); color: var(--on-mark); }
 /* ---------- single work page ---------- */
 
 .work-head { margin-top: 48px; }
-.work-head .back { font-family: var(--mono); font-size: 12px; }
+.work-head .back { font-size: 13px; }
 .work-head h1 {
   font-size: clamp(34px, 6vw, 80px);
   font-weight: 400;
@@ -326,14 +302,15 @@ a:hover { background: var(--mark); color: var(--on-mark); }
 
 .media { margin-top: var(--gap); display: grid; gap: var(--gap); }
 .media.two { grid-template-columns: 1fr 1fr; }
-.media img { border: 1px solid var(--rule); }
-.media .caption { border: 1px solid var(--rule); border-top: 0; margin-top: calc(-1 * var(--gap)); }
+.media img { border-radius: var(--radius); }
+.media .caption { background: none; border: 0; padding: 0; margin-top: calc(-1 * var(--gap) + 8px); color: var(--muted); }
 
 .video {
   position: relative;
   aspect-ratio: 16 / 9;
   background: #000;
-  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  overflow: hidden;
 }
 .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
@@ -353,11 +330,11 @@ a:hover { background: var(--mark); color: var(--on-mark); }
 }
 .release:first-of-type { border-top: 0; padding-top: 0; }
 .release:last-of-type { padding-bottom: 0; }
-.release img { border: 1px solid var(--rule); }
+.release img { border-radius: 2px; }
 .release h2 { font-size: 24px; font-weight: 400; letter-spacing: -0.01em; }
 .release .meta { margin: 6px 0 16px; }
 .release .desc { font-size: 15px; max-width: 34em; }
-.release .links { margin-top: 14px; font-family: var(--mono); font-size: 12px; display: flex; gap: 16px; flex-wrap: wrap; }
+.release .links { margin-top: 14px; font-size: 13px; display: flex; gap: 16px; flex-wrap: wrap; }
 .release .player { margin-top: 20px; }
 .release .player iframe { width: 100%; border: 0; height: 120px; }
 
@@ -369,13 +346,13 @@ a:hover { background: var(--mark); color: var(--on-mark); }
   color: var(--muted);
 }
 .site-footer > nav { display: flex; flex-wrap: wrap; padding: 0; }
-.site-footer nav a { border-left: 1px solid var(--rule); color: var(--ink); }
+.site-footer nav a { border-left: 1px solid var(--hair); color: var(--ink); }
 
 /* ---------- small screens ---------- */
 
 @media (max-width: 720px) {
   .site-header { margin-top: 10px; box-shadow: 0 -10px 0 var(--bg); }
-  .site-header .name { flex: 1 0 100%; border-right: 0; border-bottom: 1px solid var(--rule); }
+  .site-header .name { flex: 1 0 100%; border-right: 0; border-bottom: 1px solid var(--hair); }
   .site-header nav { flex: 1; }
   .site-header a { padding: 8px 10px 9px; }
   .site-header .clock { padding: 8px 10px 9px; }
@@ -394,5 +371,5 @@ a:hover { background: var(--mark); color: var(--on-mark); }
   .release { grid-template-columns: 1fr; gap: 16px; }
 
   .site-footer nav a:first-child { border-left: 0; }
-  .site-footer nav { flex: 1 0 100%; border-top: 1px solid var(--rule); }
+  .site-footer nav { flex: 1 0 100%; border-top: 1px solid var(--hair); }
 }
