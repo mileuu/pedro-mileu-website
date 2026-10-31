@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=17">
+  <link rel="stylesheet" href="style.css?v=18">
 </head>
 <body>
 
@@ -26,29 +26,34 @@
       <a href="music.html">_music</a>
       <a href="mailto:you@example.com">_contact</a>
     </nav>
+    <span class="clock" aria-hidden="true">berlin --:--:--</span>
   </header>
 
   <main class="home">
 
     <!-- HERO IMAGE: swap images/hero.jpg for another photo to change it.
          The feedback effect on hover comes from hero-feedback.js. -->
-    <figure class="hero">
+    <figure class="hero panel">
+      <figcaption class="panel-head"><span>hero.jpg</span><span>live audio-visual performance</span></figcaption>
       <div class="hero-frame">
         <img src="images/hero.jpg" alt="pedro mileu performing seated on the floor in front of a large projection of streaking blue, red and yellow lines">
         <canvas class="hero-fx" aria-hidden="true"></canvas>
       </div>
-      <figcaption class="caption">Live audio-visual performance</figcaption>
     </figure>
 
     <div class="home-text">
-      <div class="bio">
-        <p>pedro mileu, Lisboa</p>
-        <p>works with sound, video and the spaces between them</p>
-        <p>based in Berlin</p>
-      </div>
+      <section class="panel">
+        <h2 class="panel-head"><span>_bio</span></h2>
+        <div class="bio panel-body">
+          <p>pedro mileu, Lisboa</p>
+          <p>works with sound, video and the spaces between them</p>
+          <p>based in Berlin</p>
+        </div>
+      </section>
 
-      <section>
-        <h2 class="label">_upcoming</h2>
+      <section class="panel">
+        <!-- the number on the right of the title bar is how many events are listed -->
+        <h2 class="panel-head"><span>_upcoming</span><span>02</span></h2>
         <!-- Copy an <li> block to add an event. Add a link with:
              <span class="title"><a href="https://...">Event name</a></span> -->
         <ul class="events compact">
@@ -63,8 +68,8 @@
         </ul>
       </section>
 
-      <section>
-        <h2 class="label">_previous</h2>
+      <section class="panel">
+        <h2 class="panel-head"><span>_previous</span><span>04</span></h2>
         <ul class="events compact past">
         <li>
           <span class="date">xx.xx.xxxx</span>
@@ -98,6 +103,7 @@
     </nav>
   </footer>
 
-  <script src="hero-feedback.js?v=17"></script>
+  <script src="hero-feedback.js?v=18"></script>
+  <script src="site.js?v=18"></script>
 </body>
 </html>
