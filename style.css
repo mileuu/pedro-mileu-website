@@ -19,7 +19,7 @@
   --on-mark: var(--ink);
   --link: #1a1aff;          /* blue links in small text */
   --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
-  --sans: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --serif: "Newsreader", Georgia, "Times New Roman", serif;  /* main text font */
   --gutter: clamp(12px, 2.4vw, 32px);
   --gap: 16px;              /* space between panels */
 }
@@ -35,7 +35,7 @@ body {
     linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
   background-size: 24px 24px;
   color: var(--ink);
-  font-family: var(--sans);
+  font-family: var(--serif);
   font-size: 16px;
   line-height: 1.45;
   padding: 0 var(--gutter) 48px;
