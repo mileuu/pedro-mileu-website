@@ -21,7 +21,10 @@
     screen: [0.2, 0.12, 0.68, 0.65], // bright area of the photo streaks take colour from (left, top, right, bottom as 0–1)
     tears: 5,             // horizontal tears per frame at full intensity
     spread: 0.28,         // how far around the pointer streaks spawn (share of width)
-    colors: ["#00e5ff", "#ff1a00", "#e8ff00", "#0047ff", "#ff00b8", "#00ff8c", "#7a00ff"]
+    colors: ["#00e5ff", "#ff1a00", "#e8ff00", "#0047ff", "#ff00b8", "#00ff8c", "#7a00ff"],
+    escapes: 1.6,         // tiny lines leaving the photo per frame at full intensity (0 = off)
+    escapeReach: 0.992,   // how far they glide out (closer to 1 = further across the page)
+    escapeColors: ["#00b8d4", "#ff1a00", "#0047ff", "#ff00b8", "#00c46a", "#7a00ff", "#111"]
   };
 
   var frame = document.querySelector(".hero-frame");
@@ -146,8 +149,112 @@
       ctx.drawImage(canvas, 0, by, W, bh, shift, by, W, bh);
     }
 
+    // 5. a few tiny lines slip out past the edges onto the page
+    if (mouse.inside) spawnEscapes(k, speed);
+
     requestAnimationFrame(step);
   }
+
+  /* ---------- escaping lines ----------
+     A second canvas covers the whole window, underneath the page content.
+     Lines leave the photo's edges near the pointer, glide outward,
+     slow down and fade into the background. Slow ones linger by the
+     edge as faint traces. */
+
+  var page = document.createElement("canvas");
+  page.className = "page-fx";
+  page.setAttribute("aria-hidden", "true");
+  document.body.appendChild(page);
+  var pctx = page.getContext("2d");
+  var PW = 0, PH = 0;
+  var bits = [];
+  var pageRunning = false, fadeOut = 0;
+
+  function sizePage() {
+    var d = Math.min(window.devicePixelRatio || 1, 2);
+    PW = window.innerWidth;
+    PH = window.innerHeight;
+    page.width = Math.round(PW * d);
+    page.height = Math.round(PH * d);
+    pctx.setTransform(d, 0, 0, d, 0, 0);
+  }
+
+  function spawnEscapes(k, speed) {
+    var count = SETTINGS.escapes * k * (0.4 + Math.min(speed, 40) / 40);
+    var n = Math.floor(count) + (Math.random() < count % 1 ? 1 : 0);
+    if (!n) return;
+    var r = frame.getBoundingClientRect();
+    var mx = r.left + mouse.x / dpr, my = r.top + mouse.y / dpr;
+    for (var i = 0; i < n; i++) {
+      // mostly slow (they stay near the edge), a few fly far
+      var v = 0.15 + Math.pow(Math.random(), 2.5) * 7;
+      var b = { life: 1, fade: rand(0.005, 0.016), len: rand(3, 22),
+                w: Math.random() < 0.85 ? 1 : 1.6,
+                color: SETTINGS.escapeColors[(Math.random() * SETTINGS.escapeColors.length) | 0] };
+      if (Math.random() < 0.65) {
+        // sideways, like a tear running off the frame
+        var dx = Math.random() < (mx - r.left) / r.width ? 1 : -1;
+        b.x = dx > 0 ? r.right : r.left;
+        b.y = Math.min(r.bottom, Math.max(r.top, my + gauss() * r.height * 0.35));
+        b.vx = dx * v;
+        b.vy = gauss() * 0.12;
+      } else {
+        // up or down, like a streak spilling over
+        var dy = Math.random() < (my - r.top) / r.height ? 1 : -1;
+        b.y = dy > 0 ? r.bottom : r.top;
+        b.x = Math.min(r.right, Math.max(r.left, mx + gauss() * r.width * 0.3));
+        b.vy = dy * v;
+        b.vx = gauss() * 0.12;
+      }
+      bits.push(b);
+    }
+    if (!pageRunning) {
+      pageRunning = true;
+      requestAnimationFrame(pageStep);
+    }
+  }
+
+  function pageStep() {
+    // fade what is already there, so each line leaves a short dissolving trail
+    pctx.globalCompositeOperation = "destination-out";
+    pctx.globalAlpha = 0.1;
+    pctx.fillRect(0, 0, PW, PH);
+    pctx.globalCompositeOperation = "source-over";
+
+    for (var i = bits.length - 1; i >= 0; i--) {
+      var b = bits[i];
+      b.x += b.vx;
+      b.y += b.vy;
+      b.vx *= SETTINGS.escapeReach;
+      b.vy *= SETTINGS.escapeReach;
+      b.life -= b.fade;
+      if (b.life <= 0 || b.x < -40 || b.x > PW + 40 || b.y < -40 || b.y > PH + 40) {
+        bits.splice(i, 1);
+        continue;
+      }
+      var sp = Math.hypot(b.vx, b.vy) || 1;
+      var L = b.len * Math.min(1, 0.3 + sp / 2);
+      pctx.globalAlpha = b.life * b.life * 0.6;
+      pctx.strokeStyle = b.color;
+      pctx.lineWidth = b.w;
+      pctx.beginPath();
+      pctx.moveTo(b.x - (b.vx / sp) * L, b.y - (b.vy / sp) * L);
+      pctx.lineTo(b.x, b.y);
+      pctx.stroke();
+    }
+    pctx.globalAlpha = 1;
+
+    if (bits.length) fadeOut = 60;
+    if (bits.length || fadeOut-- > 0) {
+      requestAnimationFrame(pageStep);
+    } else {
+      pctx.clearRect(0, 0, PW, PH);
+      pageRunning = false;
+    }
+  }
+
+  sizePage();
+  window.addEventListener("resize", sizePage);
 
   function start() {
     if (!running) {
