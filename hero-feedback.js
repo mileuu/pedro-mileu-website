@@ -22,7 +22,7 @@
     tears: 5,             // horizontal tears per frame at full intensity
     spread: 0.28,         // how far around the pointer streaks spawn (share of width)
     colors: ["#00e5ff", "#ff1a00", "#e8ff00", "#0047ff", "#ff00b8", "#00ff8c", "#7a00ff"],
-    escapes: 1.6,         // tiny lines leaving the photo per frame at full intensity (0 = off)
+    escapes: 1.1,         // fragments leaving the photo per frame at full intensity (0 = off)
     escapeReach: 0.992,   // how far they glide out (closer to 1 = further across the page)
     escapeColors: ["#00b8d4", "#ff1a00", "#0047ff", "#ff00b8", "#00c46a", "#7a00ff", "#111"]
   };
@@ -155,10 +155,13 @@
     requestAnimationFrame(step);
   }
 
-  /* ---------- escaping lines ----------
+  /* ---------- escaping fragments ----------
      A second canvas covers the whole window, underneath the page content.
-     Lines leave the photo's edges near the pointer, glide outward,
-     slow down and fade into the background. Slow ones linger by the
+     Thin slivers torn from the live feedback image leave the photo's edges
+     near the pointer, glide outward, slow down and fade into the background.
+     They are copied from the effect every frame, so their colour flickers
+     with it; they break into pieces, stutter sideways, drop out for a frame
+     and carry red/cyan fringes like a bad signal. Slow ones linger by the
      edge as faint traces. */
 
   var page = document.createElement("canvas");
@@ -188,10 +191,13 @@
     for (var i = 0; i < n; i++) {
       // mostly slow (they stay near the edge), a few fly far
       var v = 0.15 + Math.pow(Math.random(), 2.5) * 7;
-      var b = { life: 1, fade: rand(0.005, 0.016), len: rand(3, 22),
-                w: Math.random() < 0.85 ? 1 : 1.6,
+      var b = { life: 1, fade: rand(0.005, 0.016), len: rand(6, 40),
+                thick: Math.random() < 0.7 ? rand(1, 2) : rand(2, 4),
+                // where in the projection this sliver is torn from (0–1 of the screen area)
+                su: Math.random(), sv: Math.random(),
                 color: SETTINGS.escapeColors[(Math.random() * SETTINGS.escapeColors.length) | 0] };
-      if (Math.random() < 0.65) {
+      b.horiz = Math.random() < 0.65;
+      if (b.horiz) {
         // sideways, like a tear running off the frame
         var dx = Math.random() < (mx - r.left) / r.width ? 1 : -1;
         b.x = dx > 0 ? r.right : r.left;
@@ -215,11 +221,15 @@
   }
 
   function pageStep() {
-    // fade what is already there, so each line leaves a short dissolving trail
+    // fade what is already there, so each fragment leaves a short dissolving trail
     pctx.globalCompositeOperation = "destination-out";
     pctx.globalAlpha = 0.1;
     pctx.fillRect(0, 0, PW, PH);
     pctx.globalCompositeOperation = "source-over";
+
+    var sc = SETTINGS.screen;
+    var sx0 = W * sc[0], sw = W * (sc[2] - sc[0]);
+    var sy0 = H * sc[1], sh = H * (sc[3] - sc[1]);
 
     for (var i = bits.length - 1; i >= 0; i--) {
       var b = bits[i];
@@ -232,15 +242,42 @@
         bits.splice(i, 1);
         continue;
       }
-      var sp = Math.hypot(b.vx, b.vy) || 1;
-      var L = b.len * Math.min(1, 0.3 + sp / 2);
-      pctx.globalAlpha = b.life * b.life * 0.6;
-      pctx.strokeStyle = b.color;
-      pctx.lineWidth = b.w;
-      pctx.beginPath();
-      pctx.moveTo(b.x - (b.vx / sp) * L, b.y - (b.vy / sp) * L);
-      pctx.lineTo(b.x, b.y);
-      pctx.stroke();
+      if (Math.random() < 0.12) continue;            // signal drop-out: skip a frame
+
+      var sp = Math.hypot(b.vx, b.vy);
+      var L = b.len * (0.6 + Math.min(sp, 4) * 0.35); // fast ones smear longer
+      var dir = (b.horiz ? b.vx : b.vy) < 0 ? -1 : 1;
+      var jit = Math.random() < 0.2 ? gauss() * 3 : 0; // sideways stutter
+      var a = b.life * b.life * 0.75;
+
+      // tear the sliver into 1–3 pieces with gaps that change every frame
+      var pieces = 1 + ((Math.random() * 3) | 0);
+      var at = 0;
+      for (var p = 0; p < pieces && at < L; p++) {
+        var seg = Math.max(2, (L - at) * rand(0.3, 1) / (pieces - p));
+        var sxp = sx0 + sw * ((b.su + rand(-0.02, 0.02) + 1) % 1);
+        var syp = sy0 + sh * b.sv;
+        pctx.globalAlpha = a * rand(0.6, 1);
+        if (b.horiz) {
+          var px = dir > 0 ? b.x - at - seg : b.x + at;
+          pctx.drawImage(canvas, sxp, syp, Math.max(1, seg * dpr), Math.max(1, b.thick * dpr),
+                         px, b.y + jit, seg, b.thick);
+        } else {
+          var py = dir > 0 ? b.y - at - seg : b.y + at;
+          pctx.drawImage(canvas, sxp, syp, Math.max(1, b.thick * dpr), Math.max(1, seg * dpr),
+                         b.x + jit, py, b.thick, seg);
+        }
+        at += seg + rand(1, 8);
+      }
+
+      // colour fringe: a hairline of pure colour slipped off the sliver
+      if (Math.random() < 0.35) {
+        var off = (Math.random() < 0.5 ? -1 : 1) * rand(1, 3);
+        pctx.globalAlpha = a * 0.6;
+        pctx.fillStyle = b.color;
+        if (b.horiz) pctx.fillRect(dir > 0 ? b.x - L : b.x, b.y + off + jit, L * rand(0.3, 1), 1);
+        else pctx.fillRect(b.x + off + jit, dir > 0 ? b.y - L : b.y, 1, L * rand(0.3, 1));
+      }
     }
     pctx.globalAlpha = 1;
 
