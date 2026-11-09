@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../style.css?v=23">
+  <link rel="stylesheet" href="../style.css?v=24">
 </head>
 <body>
 
@@ -28,36 +28,33 @@
     </nav>
   </header>
 
-  <div class="work-head">
-    <a class="back" href="../portfolio.html">← all works</a>
-    <h1>to remain here</h1>
-    <p class="work-sub">2026 — sound installation — UdK Rundgang 2026</p>
-  </div>
+  <!-- FIRST SCREEN: main photo beside the title and text -->
+  <main class="work-top">
+    <figure class="work-main">
+      <img src="../images/to-remain-here-1.jpg" alt="Seven tall dead branches stand upright on wooden bases in a dim white room, each lit from below by a small bulb">
+    </figure>
 
-  <figure class="work-hero">
-    <img src="../images/to-remain-here-1.jpg" alt="Seven tall dead branches stand upright on wooden bases in a dim white room, each lit from below by a small bulb">
-  </figure>
+    <div class="work-text">
+      <a class="back" href="../portfolio.html">← all works</a>
+      <h1>to remain here</h1>
+      <p class="work-sub">sound installation</p>
 
-  <section class="section">
-    <div class="label">_about</div>
-    <div class="lead">
-      <p>Vertical wooden forms stand throughout the room as mechanical agents strike their surfaces. Each impact releases a distinct tone, shaping dispersed rhythms within the space.</p>
-      <p>A biological gesture persists in synthetic form, enduring without demand, striking to communicate, sense, and sustain presence within an habitat that no longer grows.</p>
+      <div class="work-about">
+        <p>Vertical wooden forms stand throughout the room as mechanical agents strike their surfaces. Each impact releases a distinct tone, shaping dispersed rhythms within the space.</p>
+        <p>A biological gesture persists in synthetic form, enduring without demand, striking to communicate, sense, and sustain presence within an habitat that no longer grows.</p>
+      </div>
+
+      <ul class="meta">
+        <li><span>year</span>2026</li>
+        <li><span>shown at</span>UdK Rundgang 2026, Berlin</li>
+        <li><span>credits</span>pedro mileu</li>
+      </ul>
     </div>
-  </section>
+  </main>
 
-  <section class="section">
-    <div class="label">_info</div>
-    <ul class="meta">
-      <li><span>year</span>2026</li>
-      <li><span>type</span>sound installation</li>
-      <li><span>shown at</span>UdK Rundgang 2026, Berlin</li>
-    </ul>
-  </section>
-
-  <section class="section">
-    <div class="label">_video</div>
-    <div>
+  <!-- BELOW: video beside the other photos (click a photo to see it large) -->
+  <section class="work-more">
+    <div class="work-video">
       <!-- Click-to-play YouTube video: change data-id to use another video.
            The video only loads from YouTube once someone presses play. -->
       <div class="video yt" data-id="FykpFehXLZ4" data-title="to remain here">
@@ -69,22 +66,18 @@
       </div>
       <p class="video-link"><a href="https://www.youtube.com/watch?v=FykpFehXLZ4">watch on youtube ↗</a></p>
     </div>
-  </section>
 
-  <!-- GALLERY: smaller photos laid out in a loose, staggered grid -->
-  <div class="gallery">
-    <figure><img src="../images/to-remain-here-2.jpg" alt="Close-up of a mechanical striker screwed to the top of a branch, its arm resting against the bark" loading="lazy"></figure>
-    <figure><img src="../images/to-remain-here-5.webp" alt="A bulb glowing at the foot of a branch on its wooden base" loading="lazy"></figure>
-    <figure><img src="../images/to-remain-here-3.jpg" alt="Two visitors in the dark installation, one standing and one sitting on the floor, looking up at the branches" loading="lazy"></figure>
-    <figure><img src="../images/to-remain-here-4.webp" alt="A striker mounted on the side of a broken-off branch" loading="lazy"></figure>
-  </div>
-
-  <section class="section">
-    <div class="label">_credits</div>
-    <div class="credits">
-      <p>to fill</p>
+    <div class="thumbs">
+      <a href="../images/to-remain-here-3.jpg"><img src="../images/to-remain-here-3.jpg" alt="Two visitors in the dark installation, one standing and one sitting on the floor, looking up at the branches" loading="lazy"></a>
+      <a href="../images/to-remain-here-2.jpg"><img src="../images/to-remain-here-2.jpg" alt="Close-up of a mechanical striker screwed to the top of a branch, its arm resting against the bark" loading="lazy"></a>
+      <a href="../images/to-remain-here-5.webp"><img src="../images/to-remain-here-5.webp" alt="A bulb glowing at the foot of a branch on its wooden base" loading="lazy"></a>
+      <a href="../images/to-remain-here-4.webp"><img src="../images/to-remain-here-4.webp" alt="A striker mounted on the side of a broken-off branch" loading="lazy"></a>
     </div>
   </section>
+
+  <dialog class="lightbox" aria-label="Photo, click to close">
+    <img alt="">
+  </dialog>
 
   <nav class="pager">
     <a href="work-4.html">← Work Title Four</a>
@@ -101,6 +94,6 @@
     </nav>
   </footer>
 
-  <script src="../video.js?v=23"></script>
+  <script src="../work.js?v=24"></script>
 </body>
 </html>
