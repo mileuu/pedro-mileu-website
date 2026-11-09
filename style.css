@@ -279,7 +279,9 @@ a:hover { background: var(--mark); color: var(--on-mark); }
   background: #000;
   cursor: pointer;
 }
-.yt-play img { width: 100%; height: 100%; object-fit: cover; opacity: 0.75; transition: opacity .3s ease; }
+.yt-play { overflow: hidden; }
+/* zoomed a touch to hide the black bars YouTube adds to wider-than-16:9 thumbnails */
+.yt-play img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.08); opacity: 0.75; transition: opacity .3s ease; }
 .yt-play:hover img, .yt-play:focus-visible img { opacity: 1; }
 .yt-btn {
   position: absolute;
@@ -295,7 +297,8 @@ a:hover { background: var(--mark); color: var(--on-mark); }
 .yt-play:hover .yt-btn, .yt-play:focus-visible .yt-btn { padding: 12px 22px 13px; }
 .video-link { font-family: var(--mono); font-size: 12px; margin-top: 10px; }
 
-/* below: video beside a 2×2 block of photos the same height */
+/* below: video beside the other photos, same height:
+   one wide photo on top, two details side by side underneath */
 .work-more {
   display: grid;
   grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
@@ -305,11 +308,12 @@ a:hover { background: var(--mark); color: var(--on-mark); }
 .thumbs {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 3fr 2fr;
   gap: 12px;
   /* match the video box height (the "watch on youtube" line sits below it) */
   height: calc(100% - 28px);
 }
+.thumbs a:first-child { grid-column: 1 / -1; }
 .thumbs a { position: relative; display: block; min-height: 0; overflow: hidden; background: #111; }
 .thumbs a:hover { background: #111; }
 .thumbs img {
@@ -410,5 +414,6 @@ a:hover { background: var(--mark); color: var(--on-mark); }
   .work-top, .work-more { grid-template-columns: 1fr; gap: 24px; margin-top: 32px; }
   .thumbs { height: auto; grid-template-rows: none; gap: 8px; }
   .thumbs a { aspect-ratio: 4 / 3; }
+  .thumbs a:first-child { aspect-ratio: 16 / 9; }
   .release { grid-template-columns: 1fr; gap: 16px; }
 }
