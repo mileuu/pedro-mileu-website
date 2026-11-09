@@ -314,6 +314,7 @@ a:hover { background: var(--mark); color: var(--on-mark); }
   height: calc(100% - 28px);
 }
 .thumbs a:first-child { grid-column: 1 / -1; }
+.thumbs:has(> a:nth-child(4)) { grid-template-columns: repeat(3, 1fr); }  /* four photos: three share the lower row */
 .thumbs a { position: relative; display: block; min-height: 0; overflow: hidden; background: #111; }
 .thumbs a:hover { background: #111; }
 .thumbs img {
@@ -426,5 +427,7 @@ a:hover { background: var(--mark); color: var(--on-mark); }
   .thumbs { height: auto; grid-template-rows: none; gap: 8px; }
   .thumbs a { aspect-ratio: 4 / 3; }
   .thumbs a:first-child { aspect-ratio: 16 / 9; }
+  .thumbs:has(> a:nth-child(4)) { grid-template-columns: 1fr 1fr; }
+  .thumbs:has(> a:nth-child(4)) a:last-child { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
   .release { grid-template-columns: 1fr; gap: 16px; }
 }
