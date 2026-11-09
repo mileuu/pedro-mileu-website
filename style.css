@@ -247,6 +247,52 @@ a:hover { background: var(--mark); color: var(--on-mark); }
 }
 .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
+.work-sub { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 18px; }
+
+.work-hero { margin-top: 48px; }
+.work-hero img { width: 100%; }
+
+/* click-to-play video: a still with a yellow play button */
+.yt-play {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: #000;
+  cursor: pointer;
+}
+.yt-play img { width: 100%; height: 100%; object-fit: cover; opacity: 0.75; transition: opacity .3s ease; }
+.yt-play:hover img, .yt-play:focus-visible img { opacity: 1; }
+.yt-btn {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--mono);
+  font-size: 14px;
+  padding: 10px 18px 11px;
+  background: var(--mark);
+  color: var(--on-mark);
+}
+.yt-play:hover .yt-btn, .yt-play:focus-visible .yt-btn { padding: 12px 22px 13px; }
+.video-link { font-family: var(--mono); font-size: 12px; margin-top: 10px; }
+
+/* loose, staggered photo layout on a 12-column grid */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 24px;
+  align-items: start;
+  margin-top: 96px;
+}
+.gallery img { width: 100%; }
+.gallery figure:nth-child(4n+1) { grid-column: 1 / 7; }
+.gallery figure:nth-child(4n+2) { grid-column: 8 / 13; margin-top: 160px; }
+.gallery figure:nth-child(4n+3) { grid-column: 2 / 10; margin-top: 24px; }
+.gallery figure:nth-child(4n+4) { grid-column: 10 / 13; align-self: end; }
+
 .credits { font-size: 15px; max-width: 36em; }
 .credits p + p { margin-top: 0.6em; }
 
@@ -315,5 +361,9 @@ a:hover { background: var(--mark); color: var(--on-mark); }
   .events.compact .date { grid-column: auto; }
 
   .media.two { grid-template-columns: 1fr; }
+  .gallery { gap: 12px; margin-top: 64px; }
+  .gallery figure:nth-child(n) { grid-column: 1 / -1; margin-top: 0; }
+  .gallery figure:nth-child(4n+2) { grid-column: 4 / -1; }
+  .gallery figure:nth-child(4n+4) { grid-column: 1 / 10; }
   .release { grid-template-columns: 1fr; gap: 16px; }
 }
