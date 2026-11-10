@@ -345,16 +345,32 @@ a:hover { background: var(--mark); color: var(--on-mark); }
 .lightbox::backdrop { background: transparent; }
 .lightbox img { max-width: 100%; max-height: 100%; width: auto; height: auto; }
 
-/* computers only (phones keep the layout above): smaller photos, a wide
-   gap so the text can breathe, straight text edges */
+/* computers only (phones keep the layout above): photos and text share the
+   width evenly, the text sits in the middle beside the photo with room to
+   breathe, straight text edges */
 @media (min-width: 721px) {
-  .work-top, .work-more { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 64px; }
+  /* each column is half the width, but never wider than 820px (photos) / 720px
+     (text); on big screens the extra space opens up between them */
+  .work-top, .work-more {
+    grid-template-columns: minmax(0, min(calc(50% - 36px), 820px)) minmax(0, min(calc(50% - 36px), 720px));
+    justify-content: space-between;
+    gap: 72px;
+  }
   .work-top { margin-top: 32px; }
-  .work-text h1 { margin-top: 12px; }
-  .work-sub { margin-top: 8px; }
-  .work-about { margin: 18px 0 16px; text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
-  .work-more { margin-top: 48px; }
+  .work-text { align-self: center; }
+  .work-text h1 { margin-top: 14px; }
+  .work-sub { margin-top: 10px; }
+  .work-about {
+    font-size: clamp(15px, 1.12vw, 20px);
+    margin: 40px 0 36px;
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+  .work-text .meta { line-height: 1.8; }
+  .work-more { margin-top: 40px; }
   .thumbs { gap: 8px; }
+}
 }
 
 
