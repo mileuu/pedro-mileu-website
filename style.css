@@ -247,14 +247,22 @@ a:hover { background: var(--mark); color: var(--on-mark); }
 }
 .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
-/* work page with a first screen: main photo beside the text */
-.work-top {
-  display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-  gap: 40px;
-  align-items: start;
-  margin-top: 48px;
+/* ---------- installation pages ----------
+   .work holds two columns: .work-left (main photo, video) and .work-right
+   (text, other photos). On phones the columns dissolve and everything
+   stacks: photo, text, video, photos. */
+.work {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 32px;
 }
+.work-left, .work-right { display: contents; }
+.work-main { order: 1; }
+.work-text { order: 2; }
+.work-video { order: 3; margin-top: 8px; }
+.thumbs { order: 4; }
+
 .work-main img { width: 100%; }
 .work-text .back { font-family: var(--mono); font-size: 12px; }
 .work-text h1 {
@@ -298,24 +306,15 @@ a:hover { background: var(--mark); color: var(--on-mark); }
 .yt-play:hover .yt-btn, .yt-play:focus-visible .yt-btn { padding: 12px 22px 13px; }
 .video-link { font-family: var(--mono); font-size: 12px; margin-top: 10px; }
 
-/* below: video beside the other photos, same height:
-   one wide photo on top, two details side by side underneath */
-.work-more {
-  display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-  gap: 40px;
-  margin-top: 56px;
-}
+/* the other photos: one wide on top, the rest side by side underneath */
 .thumbs {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 3fr 2fr;
-  gap: 12px;
-  /* match the video box height (the "watch on youtube" line sits below it) */
-  height: calc(100% - 28px);
+  gap: 8px;
 }
+.thumbs a { aspect-ratio: 4 / 3; }
+.thumbs a:first-child { aspect-ratio: 16 / 9; }
 .thumbs a:first-child { grid-column: 1 / -1; }
-.thumbs:has(> a:nth-child(4)) { grid-template-columns: repeat(3, 1fr); }  /* four photos: three share the lower row */
 .thumbs a { position: relative; display: block; min-height: 0; overflow: hidden; background: #111; }
 .thumbs a:hover { background: #111; }
 .thumbs img {
@@ -328,6 +327,8 @@ a:hover { background: var(--mark); color: var(--on-mark); }
   opacity: 0.85;
 }
 .thumbs a:hover img { transform: scale(1.04); opacity: 1; cursor: zoom-in; }
+
+.thumbs:has(> a:nth-child(4)) a:last-child { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
 
 /* click a photo: it opens large over the page; click anywhere or Esc to close */
 .lightbox {
@@ -345,34 +346,38 @@ a:hover { background: var(--mark); color: var(--on-mark); }
 .lightbox::backdrop { background: transparent; }
 .lightbox img { max-width: 100%; max-height: 100%; width: auto; height: auto; }
 
-/* computers only (phones keep the layout above): photos and text share the
-   width evenly, the text sits in the middle beside the photo with room to
-   breathe, straight text edges */
+/* computers: two columns that fit on one screen. The left column (main
+   photo over the video, 16:9 each) is sized from the window height, never
+   more than 55% of the width. The right column has the text on top and the
+   other photos filling the rest of its height, so there are no empty gaps. */
 @media (min-width: 721px) {
-  /* each column is half the width, but never wider than 820px (photos) / 720px
-     (text); on big screens the extra space opens up between them */
-  .work-top, .work-more {
-    grid-template-columns: minmax(0, min(calc(50% - 36px), 820px)) minmax(0, min(calc(50% - 36px), 720px));
-    justify-content: space-between;
-    gap: 72px;
+  .work {
+    display: grid;
+    grid-template-columns: min(calc((100vh - 200px) / 2 * 16 / 9), 55%) minmax(0, 1fr);
+    gap: 64px;
   }
-  .work-top { margin-top: 32px; }
-  .work-text { align-self: center; }
+  .work-left, .work-right { display: flex; flex-direction: column; gap: 32px; }
+  .work-video { margin-top: 0; }
+  .work-main img { aspect-ratio: 16 / 9; object-fit: cover; }
+  .video-link { line-height: 18px; }
+  .work-right { padding-bottom: 28px; }   /* bottom lines up with the video, not the link under it */
+
   .work-text h1 { margin-top: 14px; }
   .work-sub { margin-top: 10px; }
   .work-about {
     font-size: clamp(15px, 1.12vw, 20px);
-    margin: 40px 0 36px;
+    margin: 32px 0 28px;
     text-align: justify;
     hyphens: auto;
     -webkit-hyphens: auto;
   }
   .work-text .meta { line-height: 1.8; }
-  .work-more { margin-top: 40px; }
-  .thumbs { gap: 8px; }
-}
-}
 
+  .thumbs { flex: 1; min-height: 150px; grid-template-rows: 3fr 2fr; }
+  .thumbs:has(> a:nth-child(4)) { grid-template-columns: repeat(3, 1fr); }
+  .thumbs:has(> a:nth-child(4)) a:last-child { grid-column: auto; }
+  .thumbs a, .thumbs a:first-child { aspect-ratio: auto; }
+}
 
 .credits { font-size: 15px; max-width: 36em; }
 .credits p + p { margin-top: 0.6em; }
@@ -442,11 +447,5 @@ a:hover { background: var(--mark); color: var(--on-mark); }
   .events.compact .date { grid-column: auto; }
 
   .media.two { grid-template-columns: 1fr; }
-  .work-top, .work-more { grid-template-columns: 1fr; gap: 24px; margin-top: 32px; }
-  .thumbs { height: auto; grid-template-rows: none; gap: 8px; }
-  .thumbs a { aspect-ratio: 4 / 3; }
-  .thumbs a:first-child { aspect-ratio: 16 / 9; }
-  .thumbs:has(> a:nth-child(4)) { grid-template-columns: 1fr 1fr; }
-  .thumbs:has(> a:nth-child(4)) a:last-child { grid-column: 1 / -1; aspect-ratio: 16 / 9; }
   .release { grid-template-columns: 1fr; gap: 16px; }
 }
