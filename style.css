@@ -66,6 +66,17 @@ a:hover { background: var(--mark); color: var(--on-mark); }
 
 .site-header a[aria-current="page"] { background: var(--mark); color: var(--on-mark); }
 
+/* computers: the menu stays at the top while the page scrolls under it */
+@media (min-width: 721px) {
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--bg);
+    padding-bottom: 16px;
+  }
+}
+
 /* ---------- labelled sections (the "_bio" pattern) ---------- */
 
 .section {
@@ -101,7 +112,7 @@ a:hover { background: var(--mark); color: var(--on-mark); }
   margin-top: 56px;
 }
 
-.home .hero { position: sticky; top: 24px; }
+.home .hero { position: sticky; top: 100px; }   /* below the fixed menu */
 
 .home-text section { margin-top: 48px; }
 .home-text .label { font-weight: 400; padding-top: 0; margin-bottom: 10px; }
@@ -177,7 +188,7 @@ a:hover { background: var(--mark); color: var(--on-mark); }
 /* side index: the same list of works on the portfolio and every work page */
 .index-side {
   position: sticky;
-  top: 24px;
+  top: 100px;                 /* below the fixed menu */
   align-self: start;
   font-family: var(--mono);
   font-size: 12px;
