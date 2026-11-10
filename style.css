@@ -248,24 +248,21 @@ a:hover { background: var(--mark); color: var(--on-mark); }
 .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
 /* ---------- installation pages ----------
-   .work holds two columns: .work-left (main photo, video) and .work-right
-   (text, other photos). On phones the columns dissolve and everything
-   stacks: photo, text, video, photos. */
-.work {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  margin-top: 32px;
-}
-.work-left, .work-right { display: contents; }
+   Computers: a side index of all works on the left, then one reading
+   column (title, photo, text, info, video, photos).
+   Phones: no side index; photo first, then title and text, video, photos. */
+.work-page { margin-top: 32px; }
+.work-side { display: none; }
+.work { display: flex; flex-direction: column; gap: 24px; }
 .work-main { order: 1; }
-.work-text { order: 2; }
-.work-video { order: 3; margin-top: 8px; }
-.thumbs { order: 4; }
+.work-title { order: 2; }
+.work-body { order: 3; margin-top: -8px; }
+.work-video { order: 4; margin-top: 8px; }
+.thumbs { order: 5; }
 
 .work-main img { width: 100%; }
-.work-text .back { font-family: var(--mono); font-size: 12px; }
-.work-text h1 {
+.work-title .back { font-family: var(--mono); font-size: 12px; }
+.work-title h1 {
   font-size: clamp(30px, 3.4vw, 48px);
   font-weight: 400;
   letter-spacing: -0.02em;
@@ -273,7 +270,7 @@ a:hover { background: var(--mark); color: var(--on-mark); }
   margin-top: 18px;
 }
 .work-sub { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 10px; }
-.work-about { font-size: clamp(15px, 1.2vw, 17px); line-height: 1.45; margin: 24px 0 22px; }
+.work-about { font-size: clamp(15px, 1.2vw, 17px); line-height: 1.45; margin-bottom: 22px; }
 .work-about p + p { margin-top: 0.7em; }
 
 /* click-to-play video: a still with a yellow play button */
@@ -346,37 +343,51 @@ a:hover { background: var(--mark); color: var(--on-mark); }
 .lightbox::backdrop { background: transparent; }
 .lightbox img { max-width: 100%; max-height: 100%; width: auto; height: auto; }
 
-/* computers: two columns that fit on one screen. The left column (main
-   photo over the video, 16:9 each) is sized from the window height, never
-   more than 55% of the width. The right column has the text on top and the
-   other photos filling the rest of its height, so there are no empty gaps. */
+/* computers: side index + one reading column */
 @media (min-width: 721px) {
-  .work {
+  .work-page {
     display: grid;
-    grid-template-columns: min(calc((100vh - 200px) / 2 * 16 / 9), 55%) minmax(0, 1fr);
+    grid-template-columns: 200px minmax(0, 680px);
     gap: 64px;
+    margin-top: 48px;
   }
-  .work-left, .work-right { display: flex; flex-direction: column; gap: 32px; }
-  .work-video { margin-top: 0; }
-  .work-main img { aspect-ratio: 16 / 9; object-fit: cover; }
-  .video-link { line-height: 18px; }
-  .work-right { padding-bottom: 28px; }   /* bottom lines up with the video, not the link under it */
 
-  .work-text h1 { margin-top: 14px; }
-  .work-sub { margin-top: 10px; }
+  /* the side index: the same list of works on every installation page */
+  .work-side {
+    display: block;
+    position: sticky;
+    top: 24px;
+    align-self: start;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .work-side .all { display: inline-block; margin-bottom: 20px; }
+  .work-side h3 { font-weight: 400; font-size: 12px; color: var(--muted); margin: 20px 0 6px; }
+  .work-side ul { list-style: none; }
+  .work-side li { padding: 2px 0; }
+  .work-side a { text-decoration: none; }
+  .work-side a[aria-current="page"] { background: var(--mark); color: var(--on-mark); }
+
+  .work { gap: 28px; }
+  .work > * { order: 0; }
+  .work-title .back { display: none; }      /* the side index has "all works" */
+  .work-title h1 { font-size: 40px; margin-top: 0; }
+  .work-body { margin-top: 0; }
+  .work-video { margin-top: 0; }
   .work-about {
-    font-size: clamp(15px, 1.12vw, 20px);
-    margin: 32px 0 28px;
+    font-size: 17px;
+    line-height: 1.5;
+    margin-bottom: 28px;
     text-align: justify;
     hyphens: auto;
     -webkit-hyphens: auto;
   }
-  .work-text .meta { line-height: 1.8; }
 
-  .thumbs { flex: 1; min-height: 150px; grid-template-rows: 3fr 2fr; }
-  .thumbs:has(> a:nth-child(4)) { grid-template-columns: repeat(3, 1fr); }
-  .thumbs:has(> a:nth-child(4)) a:last-child { grid-column: auto; }
-  .thumbs a, .thumbs a:first-child { aspect-ratio: auto; }
+  /* other photos: small, side by side (three in a row, or 2×2 for four) */
+  .thumbs { grid-template-columns: repeat(3, 1fr); }
+  .thumbs:has(> a:nth-child(4)) { grid-template-columns: 1fr 1fr; }
+  .thumbs a, .thumbs a:first-child, .thumbs:has(> a:nth-child(4)) a:last-child { grid-column: auto; aspect-ratio: 16 / 9; }
 }
 
 .credits { font-size: 15px; max-width: 36em; }

@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../style.css?v=36">
+  <link rel="stylesheet" href="../style.css?v=38">
 </head>
 <body>
 
@@ -28,13 +28,42 @@
     </nav>
   </header>
 
-  <!-- Left: main photo and video. Right: text and the other photos.
-       On phones it all stacks: photo, text, video, photos. -->
-  <main class="work">
-    <div class="work-left">
+  <div class="work-page">
+    <aside class="work-side">
+      <a class="all" href="../portfolio.html">← all works</a>
+      <h3>_installations</h3>
+      <ul>
+        <li><a href="to-remain-here.html">to remain here</a></li>
+        <li><a href="rainforest-iv.html" aria-current="page">Rainforest IV – a Study in Six Objects</a></li>
+      </ul>
+      <h3>_performances</h3>
+      <ul>
+        <li><a href="work-3.html">Work Title Three</a></li>
+        <li><a href="work-4.html">Work Title Four</a></li>
+      </ul>
+    </aside>
+
+    <main class="work">
+      <div class="work-title">
+        <a class="back" href="../portfolio.html">← all works</a>
+        <h1>Rainforest IV – a Study in Six Objects</h1>
+        <p class="work-sub">sound installation</p>
+      </div>
+
       <figure class="work-main">
         <img src="../images/rainforest-iv-1.jpg" alt="A green watering can, a blue metal barrel and a grey drainpipe hang from thin wires in a dim room">
       </figure>
+
+      <div class="work-body">
+        <div class="work-about">
+          <p>“Rainforest IV” (1973) is an electroacoustic environment conceived by David Tudor. In this installation I explore Tudor’s installation concept in a six object study.</p>
+        </div>
+        <ul class="meta">
+          <li><span>year</span>2025</li>
+          <li><span>shown at</span>SRH Berlin</li>
+          <li><span>credits</span>pedro mileu</li>
+        </ul>
+      </div>
 
       <div class="work-video">
         <!-- Click-to-play YouTube video: change data-id to use another video.
@@ -48,34 +77,15 @@
         </div>
         <p class="video-link"><a href="https://www.youtube.com/watch?v=YB7w8Ts6MSw">watch on youtube ↗</a></p>
       </div>
-    </div>
 
-    <div class="work-right">
-      <div class="work-text">
-        <a class="back" href="../portfolio.html">← all works</a>
-        <h1>Rainforest IV – a Study in Six Objects</h1>
-        <p class="work-sub">sound installation</p>
-
-        <div class="work-about">
-          <p>“Rainforest IV” (1973) is an electroacoustic environment conceived by David Tudor. In this installation I explore Tudor’s installation concept in a six object study.</p>
-        </div>
-
-        <ul class="meta">
-          <li><span>year</span>2025</li>
-          <li><span>shown at</span>SRH Berlin</li>
-          <li><span>credits</span>pedro mileu</li>
-        </ul>
-      </div>
-
-      <!-- first photo is the wide one on top; the rest share the row below -->
       <div class="thumbs">
         <a href="../images/rainforest-iv-2.jpg"><img src="../images/rainforest-iv-2.jpg" alt="Seen through a glass door: pedro mileu at a computer in the room, the grey drainpipe and red object hanging behind" loading="lazy"></a>
         <a href="../images/rainforest-iv-3.jpg"><img src="../images/rainforest-iv-3.jpg" alt="Looking up at the glass and steel facade of the courtyard outside" loading="lazy"></a>
         <a href="../images/rainforest-iv-4.jpg"><img src="../images/rainforest-iv-4.jpg" alt="A visitor standing with their head inside the hanging blue barrel" loading="lazy"></a>
         <a href="../images/rainforest-iv-5.jpg"><img src="../images/rainforest-iv-5.jpg" alt="A metal sheet hanging from a steel rail in front of a window, with a laptop running audio software beside it" loading="lazy"></a>
       </div>
-    </div>
-  </main>
+    </main>
+  </div>
 
   <dialog class="lightbox" aria-label="Photo, click to close">
     <img alt="">
@@ -96,6 +106,6 @@
     </nav>
   </footer>
 
-  <script src="../work.js?v=36"></script>
+  <script src="../work.js?v=38"></script>
 </body>
 </html>
